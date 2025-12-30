@@ -1,33 +1,142 @@
 
+struct Vec2f {
+  float x;
+  float y;
 
-class Vec2f {
-  public:
-    float x;
-    float y;
+  // Constructors
+  Vec2f();
+  Vec2f(float x, float y);
 
-    // Constructors
-    Vec2f();
-    Vec2f(float x, float y);
+  // Operators
+  // Relational
+  bool  operator==(const Vec2f& rhs) const;
+  // Arithmetic self
+  Vec2f operator+ (const Vec2f& rhs) const;
+  Vec2f operator- (const Vec2f& rhs) const;
+  Vec2f operator* (const Vec2f& rhs) const;
+  Vec2f operator/ (const Vec2f& rhs) const;
+  // Compound assignment self
+  void  operator+=(const Vec2f& rhs);
+  void  operator-=(const Vec2f& rhs);
+  void  operator*=(const Vec2f& rhs);
+  void  operator/=(const Vec2f& rhs);
+  // Arithmetic float
+  Vec2f operator+(float rhs) const; 
+  Vec2f operator-(float rhs) const; 
+  Vec2f operator*(float rhs) const; 
+  Vec2f operator/(float rhs) const; 
+  // Compound assignment float
+  void  operator+=(float rhs);
+  void  operator-=(float rhs);
+  void  operator*=(float rhs);
+  void  operator/=(float rhs);
+  // To string
+  friend std::ostream& operator<<(std::ostream& os, const Vec2f& rhs);
 
-    // Operators
-    bool operator==(const Vec2f& rhs) const;
-    friend std::ostream& operator<<(std::ostream& os, const Vec2f& rhs);
+  // Functions
+  float length();
+  float dot(Vec2f v2);
+  float distance(Vec2f v2);
+  float angle_rad(Vec2f v2);
+  float angle_deg(Vec2f v2);
+  Vec2f normalize();
+  // Matrix transform();
+  Vec2f lerp(Vec2f v2, float amount);
+  Vec2f reflect(Vec2f normal);
+  Vec2f rotate_rad(float angle);
+  Vec2f rotate_deg(float angle);
+  Vec2f move_towards(Vec2f target, float max_distance);
+  Vec2f invert();
+  Vec2f clamp(Vec2f min, Vec2f max);
 };
 
-Vec2f::Vec2f() {
-  x = 0;
-  y = 0;
-}
-Vec2f::Vec2f(float x2, float y2) {
-  x = x2;
-  y = y2;
-}
+Vec2f::Vec2f() { x = 0; y = 0; }
+Vec2f::Vec2f(float x2, float y2) { x = x2; y = y2; }
 
-bool Vec2f::operator==(const Vec2f& rhs) const {
-  return x == rhs.x && y == rhs.y;
-}
+// Relational
+bool Vec2f::operator==(const Vec2f& rhs) const { return x == rhs.x && y == rhs.y; }
+// Arithmetic self
+Vec2f Vec2f::operator+(const Vec2f& rhs) const { return Vec2f(x+rhs.x, y+rhs.y); }
+Vec2f Vec2f::operator-(const Vec2f& rhs) const { return Vec2f(x-rhs.x, y-rhs.y); }
+Vec2f Vec2f::operator*(const Vec2f& rhs) const { return Vec2f(x*rhs.x, y*rhs.y); }
+Vec2f Vec2f::operator/(const Vec2f& rhs) const { return Vec2f(x/rhs.x, y/rhs.y); }
+// Compound assignment self
+void  Vec2f::operator+=(const Vec2f& rhs) { x += rhs.x; y += rhs.y; }
+void  Vec2f::operator-=(const Vec2f& rhs) { x -= rhs.x; y -= rhs.y; }
+void  Vec2f::operator*=(const Vec2f& rhs) { x *= rhs.x; y *= rhs.y; }
+void  Vec2f::operator/=(const Vec2f& rhs) { x /= rhs.x; y /= rhs.y; }
+// Arithmetic float
+Vec2f Vec2f::operator+(float rhs) const { return Vec2f(x+rhs, y+rhs); }
+Vec2f Vec2f::operator-(float rhs) const { return Vec2f(x-rhs, y-rhs); }
+Vec2f Vec2f::operator*(float rhs) const { return Vec2f(x*rhs, y*rhs); }
+Vec2f Vec2f::operator/(float rhs) const { return Vec2f(x/rhs, y/rhs); }
+// Compound assignment float
+void  Vec2f::operator+=(float rhs) { x += rhs; y += rhs; }
+void  Vec2f::operator-=(float rhs) { x -= rhs; y -= rhs; }
+void  Vec2f::operator*=(float rhs) { x *= rhs; y *= rhs; }
+void  Vec2f::operator/=(float rhs) { x /= rhs; y /= rhs; }
+// To string
 std::ostream& operator<<(std::ostream& os, const Vec2f& rhs) {
   os << "{x=" << rhs.x << ",y=" << rhs.y << "}";
   return os;
+}
+
+// Functions
+float Vec2f::length() { return sqrt(pow(x,2) + pow(y,2)); }
+float Vec2f::dot(Vec2f v2) { return (x * v2.x) + (y * v2.y); }
+float Vec2f::distance(Vec2f v2) { return sqrt(pow(x - v2.x,2) + pow(y - v2.y,2)); }
+float Vec2f::angle_rad(Vec2f v2) { return atan2(v2.y - y, v2.x - x); }
+float Vec2f::angle_deg(Vec2f v2) { return atan2(v2.y - y, v2.x - x) * (180 / M_PI); }
+Vec2f Vec2f::normalize() {
+  float len = length();
+  if (len > 0) {
+    float ilen = 1 / len;
+    return *this * ilen;
+  }
+  return *this;
+}
+//Matrix transform() { return ; }
+Vec2f Vec2f::lerp(Vec2f v2, float amount) { return *this + ((v2 - *this) * amount); }
+Vec2f Vec2f::reflect(Vec2f normal) { return *this - ((*this * normal) * 2) * normal; }
+Vec2f Vec2f::rotate_rad(float angle) {
+  float cosres = cos(angle);
+  float sinres = sin(angle);
+
+  return Vec2f(
+    (x * cosres) - (y * sinres),
+    (x * sinres) + (y * cosres)
+  );
+}
+Vec2f Vec2f::rotate_deg(float angle) {
+  float cosres = cos(angle / (180 / M_PI));
+  float sinres = sin(angle / (180 / M_PI));
+
+  return Vec2f(
+    (x * cosres) - (y * sinres),
+    (x * sinres) + (y * cosres)
+  );
+}
+Vec2f Vec2f::move_towards(Vec2f target, float max_distance) {
+  Vec2f d = target - *this;
+  float value = pow(d.length(),2);
+
+  if (value == 0 || (max_distance >= 0 && value <= pow(max_distance,2)))
+    return target;
+  float dist = distance(target);
+
+  return *this + ((d / dist) * max_distance);
+}
+Vec2f Vec2f::invert() { return Vec2f(1/x, 1/y); }
+Vec2f Vec2f::clamp(Vec2f min, Vec2f max) {
+  float x2 = x;
+  float y2 = y;
+
+  if (x > max.x) x2 = max.x;
+  if (x < min.x) x2 = min.x;
+
+  if (y > max.y) y2 = max.y;
+  if (y < min.y) y2 = min.y;
+
+  return Vec2f(x2,y2);
 }
 

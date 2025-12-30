@@ -1,23 +1,23 @@
 
-class Vec4f {
-  public:
-    union {
-      Vec3f v3;
-      struct {
-        float x;
-        float y;
-        float z;
-      };
+struct Vec4f {
+  union {
+    Vec2f v2;
+    Vec3f v3;
+    struct {
+      float x;
+      float y;
+      float z;
     };
-    float w;
+  };
+  float w;
 
-    // Constructors
-    Vec4f();
-    Vec4f(float x, float y, float z, float w);
+  // Constructors
+  Vec4f();
+  Vec4f(float x, float y, float z, float w);
 
-    // Operators
-    bool operator==(const Vec4f& rhs) const;
-    friend std::ostream& operator<<(std::ostream& os, const Vec4f& rhs);
+  // Operators
+  bool operator==(const Vec4f& rhs) const;
+  friend std::ostream& operator<<(std::ostream& os, const Vec4f& rhs);
 };
 
 Vec4f::Vec4f() {
