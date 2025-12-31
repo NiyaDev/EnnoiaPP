@@ -155,3 +155,9 @@ TEST_CASE("Vector4", "[VEC4]") {
   REQUIRE(Vec4f(10,10,10,10).v3 == Vec3f(10,10,10));
 }
 
+
+TEST_CASE("System", "[SYS]") {
+  ennoia.init();
+}
+
+

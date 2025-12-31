@@ -209,7 +209,6 @@ Vec3f Vec3f::move_towards(Vec3f target, float max_distance) {
   float dist = sqrt(value);
 
   Vec3f res = *this + d / dist * max_distance;
-  printf("%f,%f,%f\n",res.x,res.y,res.z);
   
   return *this + d / dist * max_distance;
 }
