@@ -5,9 +5,16 @@ desc = "Game framework"
 type = "lib"
 version = "0.1.0"
 file = "src/root.cpp"
+dependencies = [
+  "SDL3-link"
+]
 
 
 [ennoia-tests]
 name = "Ennoia Tests"
 type = "test"
 file = "tests/"
+dependencies = [
+  "SDL3-link"
+]
+

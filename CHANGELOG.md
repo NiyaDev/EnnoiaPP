@@ -4,3 +4,6 @@
 - Finished Vector2 functions.
 - Finished Vector3 functions.
 
+#### [12/31/25]
+- Started on core system functions.
+

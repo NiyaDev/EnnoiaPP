@@ -157,7 +157,8 @@ TEST_CASE("Vector4", "[VEC4]") {
 
 
 TEST_CASE("System", "[SYS]") {
-  ennoia.init();
+  ennoia = new Ennoia();
+  //ennoia.init();
 }
 
 

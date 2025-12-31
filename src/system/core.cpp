@@ -14,21 +14,25 @@ class Ennoia {
 
     bool borderless, fullscreen;
 
-    Ennoia* init();
+    // Constructors
+    Ennoia();
+    //~Ennoia();
+    //Ennoia* init();
+    //Ennoia* clean();
 
     Ennoia* set_screen(int width, int height);
     Ennoia* set_render(int width, int height);
 };
 
-Ennoia* Ennoia::init() {
+Ennoia::Ennoia() {
   // Load all options + default
   // Initialize SDL3
-  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == false) {
-    std::cout << "Failed to initialize SDL3. " << SDL_GetError();
-    return this;
-  }
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == false)
+    debug::FATAL("Failed to initialize SDL3.", SDL_GetError());
 
-  return this;
+  if (window = SDL_CreateWindow("TEST", 1280, 720, 0); window == nullptr)
+    debug::FATAL("Failed to create window.", SDL_GetError());
+  //SDL_GLSetAttribute();
 }
 
 Ennoia* Ennoia::set_screen(int width, int height) {
@@ -46,5 +50,5 @@ Ennoia* Ennoia::set_render(int width, int height) {
   return this;
 }
 
-static Ennoia ennoia;
+static Ennoia* ennoia;
 
