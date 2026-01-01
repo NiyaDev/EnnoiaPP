@@ -1,7 +1,7 @@
 
 
 #include<catch2/catch_test_macros.hpp>
-#include"../src/root.cpp"
+#include"../src/ennoia.cpp"
 
 
 TEST_CASE("Vector2", "[VEC2]") {
@@ -156,9 +156,5 @@ TEST_CASE("Vector4", "[VEC4]") {
 }
 
 
-TEST_CASE("System", "[SYS]") {
-  ennoia = new Ennoia();
-  //ennoia.init();
-}
 
 

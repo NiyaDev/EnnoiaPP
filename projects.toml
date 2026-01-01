@@ -4,9 +4,17 @@ name = "Ennoia"
 desc = "Game framework"
 type = "lib"
 version = "0.1.0"
-file = "src/root.cpp"
+file = "src/ennoia.cpp"
+
+
+[ennoia-head-test]
+name = "Ennoia Head tests"
+type = "exe"
+version = "0.0.0"
+file = "src/test.cpp"
 dependencies = [
-  "SDL3-link"
+  "SDL3-link"#,
+  #"opengl-link"
 ]
 
 
@@ -15,6 +23,7 @@ name = "Ennoia Tests"
 type = "test"
 file = "tests/"
 dependencies = [
-  "SDL3-link"
+  "SDL3-link"#,
+  #"opengl-link"
 ]
 

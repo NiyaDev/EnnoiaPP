@@ -7,3 +7,8 @@
 #### [12/31/25]
 - Started on core system functions.
 
+#### [1/1/26]
+- Basic SDL3 init/close.
+- Basic Event handler.
+- Fixed FATAL error handler.
+
