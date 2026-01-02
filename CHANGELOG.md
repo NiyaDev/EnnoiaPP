@@ -12,3 +12,8 @@
 - Basic Event handler.
 - Fixed FATAL error handler.
 
+#### [1/2/26]
+- Finished Textures and its constructors/destructors.
+- Added OpenGL and GLEW initializing.
+- Started on Mesh.
+

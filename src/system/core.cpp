@@ -2,15 +2,21 @@
 
 class Ennoia {
   private:
-    struct { // SDL objects
+    struct { // SDL
       SDL_Window* window;
       SDL_GLContext context;
       SDL_Event event;
     };
 
+    struct { // Framebuffer
+      unsigned int fb, rb;
+      Texture tex;
+      //Mesh quad;
+    } framebuffer;
+
   public:
-    int screenWidth, screenHeight;
-    int renderWidth, renderHeight;
+    unsigned int screenWidth, screenHeight;
+    unsigned int renderWidth, renderHeight;
 
     bool borderless, fullscreen;
 
@@ -21,6 +27,7 @@ class Ennoia {
     ~Ennoia();
 
     bool ShouldClose();
+    void Draw();
 
     Ennoia* SetScreen(int width, int height);
     Ennoia* SetRender(int width, int height);
@@ -57,11 +64,36 @@ Ennoia::Ennoia(String title = "Ennoia") {
   if (!SDL_GL_MakeCurrent(window, context))
     debug::FATAL("Failed to make OpenGL context current.", SDL_GetError());
 
-  // GL Enables
-  
+  glewExperimental = GL_TRUE;
+  if (glewInit() != GLEW_OK)
+    debug::FATAL("GLEW Failed to initialize.", 0);
 
+  // GL Enables
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  
   // Create Default Shaders
+
   // Framebuffer
+  // framebuffer.quad(MESH_QUAD);
+  // framebuffer.quad.shader(FB_VERTEX, FB_FRAGMENT);
+  // framebuffer.quad.shader.SetInt("screenTexture", 1);
+
+  glGenFramebuffers(1, &framebuffer.fb);
+  glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.fb);
+
+  framebuffer.tex = Texture(screenWidth, screenHeight);
+  glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, framebuffer.tex.id, 0);
+
+  glGenRenderbuffers(1, &framebuffer.rb);
+  glBindRenderbuffer(GL_RENDERBUFFER, framebuffer.rb);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, screenWidth, screenHeight);
+  glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, framebuffer.rb);
+  if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    debug::FATAL("Failed to setup framebuffer.", 0);
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
   // Load Defaults
   // Keybinds
 }
@@ -72,7 +104,35 @@ Ennoia::~Ennoia() {
   SDL_GL_DestroyContext(context);
   event = {};
 
+  glDeleteFramebuffers(1, &framebuffer.fb);
+  glDeleteRenderbuffers(1, &framebuffer.rb);
+
   SDL_Quit();
+}
+
+void Ennoia::Draw() {
+  glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.fb);
+  glEnable(GL_DEPTH_TEST);
+  glViewport(0, 0, renderWidth, renderHeight);
+
+  glClearColor(0.5, 0.5, 0.5, 1.0);
+  glClear(0);
+
+  // End
+  // scrollwheel = 0;
+  
+  // Setup default framebuffer
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+  glDisable(GL_DEPTH_TEST);
+  glClearColor(0.5, 0.5, 0.5, 1.0);
+  glViewport(0, 0, screenWidth, screenHeight);
+  
+  // Draw quad to screen
+  //framebuffer.quad.shader.use();
+  glActiveTexture(GL_TEXTURE0);
+  //glBindVertexArray(framebuffer.quad.vao);
+  glBindTexture(GL_TEXTURE_2D, framebuffer.tex.id);
+  //glDrawArrays(GL_TRIANGLES, 0, framebuffer.quad.vertices.len);
 }
 
 Ennoia* Ennoia::SetScreen(int width, int height) {

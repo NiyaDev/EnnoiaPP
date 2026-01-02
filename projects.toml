@@ -7,23 +7,14 @@ version = "0.1.0"
 file = "src/ennoia.cpp"
 
 
-[ennoia-head-test]
-name = "Ennoia Head tests"
-type = "exe"
-version = "0.0.0"
-file = "src/test.cpp"
-dependencies = [
-  "SDL3-link"#,
-  #"opengl-link"
-]
-
-
 [ennoia-tests]
 name = "Ennoia Tests"
 type = "test"
 file = "tests/"
 dependencies = [
-  "SDL3-link"#,
-  #"opengl-link"
+  "SDL3-link",
+  "spng-link",
+  "GL-link",
+  "GLEW-link"
 ]
 

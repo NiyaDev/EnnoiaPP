@@ -156,5 +156,11 @@ TEST_CASE("Vector4", "[VEC4]") {
 }
 
 
-
+TEST_CASE("TEST", "[TEST]") {
+  Ennoia e("TEST1");
+  
+  //while (!e.ShouldClose()) {
+  //  e.Draw();
+  //}
+}
 
