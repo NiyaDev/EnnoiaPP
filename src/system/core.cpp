@@ -11,8 +11,11 @@ class Ennoia {
     struct { // Framebuffer
       unsigned int fb, rb;
       Texture tex;
-      //Mesh quad;
+      Mesh quad;
     } framebuffer;
+
+    Shader default_shader_2d;
+    Shader default_shader_3d;
 
   public:
     unsigned int screenWidth, screenHeight;
@@ -74,11 +77,15 @@ Ennoia::Ennoia(String title = "Ennoia") {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   
   // Create Default Shaders
+  default_shader_2d = Shader(DEFAULT_VERTEX_2D, DEFAULT_FRAGMENT_2D);
+  default_shader_2d.SetUniform("screensize", Vec2f((float)renderWidth, (float)renderHeight));
+  default_shader_3d = Shader(DEFAULT_VERTEX_3D, DEFAULT_FRAGMENT_3D);
+  //default_shader_2d.SetUniform("projection", matrix::perspective{float}(70 * math::PI / 180, (float)renWidth / (float)renHeight, 0.1, 100.0).transpose());
 
   // Framebuffer
-  // framebuffer.quad(MESH_QUAD);
-  // framebuffer.quad.shader(FB_VERTEX, FB_FRAGMENT);
-  // framebuffer.quad.shader.SetInt("screenTexture", 1);
+  framebuffer.quad = Mesh(MESH_QUAD);
+  framebuffer.quad.shader = Shader(FB_VERTEX, FB_FRAGMENT);
+  framebuffer.quad.shader.SetUniform("screenTexture", (int)1);
 
   glGenFramebuffers(1, &framebuffer.fb);
   glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.fb);
@@ -128,11 +135,13 @@ void Ennoia::Draw() {
   glViewport(0, 0, screenWidth, screenHeight);
   
   // Draw quad to screen
-  //framebuffer.quad.shader.use();
+  framebuffer.quad.shader.Use();
   glActiveTexture(GL_TEXTURE0);
-  //glBindVertexArray(framebuffer.quad.vao);
+  glBindVertexArray(framebuffer.quad.vao);
   glBindTexture(GL_TEXTURE_2D, framebuffer.tex.id);
-  //glDrawArrays(GL_TRIANGLES, 0, framebuffer.quad.vertices.len);
+  glDrawArrays(GL_TRIANGLES, 0, framebuffer.quad.vertices.len);
+
+  SDL_GL_SwapWindow(window);
 }
 
 Ennoia* Ennoia::SetScreen(int width, int height) {

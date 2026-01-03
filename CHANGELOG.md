@@ -17,3 +17,8 @@
 - Added OpenGL and GLEW initializing.
 - Started on Mesh.
 
+#### [1/3/26]
+- Created basic Array structure.
+- Fully implemented Shaders.
+- Getting closer and closer to finishing setup.
+

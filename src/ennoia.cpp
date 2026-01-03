@@ -3,6 +3,8 @@
 #include<iostream>
 #include<fstream>
 #include<cmath>
+#include<unordered_map>
+#include<type_traits>
 
 #include"types.h"
 #include"debug/errors.cpp"
@@ -14,6 +16,8 @@
 
 #include<spng.h>
 
+#include"utilities/array.cpp"
+
 #include"vectors/vec2.cpp"
 #include"vectors/vec3.cpp"
 #include"vectors/vec4.cpp"
@@ -21,6 +25,7 @@
 #include"vectors/matrix.cpp"
 
 #include"texture/class.cpp"
+#include"shader/class.cpp"
 #include"mesh/class.cpp"
 
 #include"system/core.cpp"
