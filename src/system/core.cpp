@@ -40,8 +40,8 @@ Ennoia::Ennoia(String title = "Ennoia") {
   // Load all options + default
   screenWidth  = 1280;
   screenHeight =  720;
-  renderWidth  =  screenWidth / 1;
-  screenHeight = screenHeight / 1;
+  renderWidth  = screenWidth / 1;
+  renderHeight = screenHeight / 1;
 
   // Initialize SDL3
   SDL_SetLogPriority(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_VERBOSE);
@@ -85,17 +85,17 @@ Ennoia::Ennoia(String title = "Ennoia") {
   // Framebuffer
   framebuffer.quad = Mesh(MESH_QUAD);
   framebuffer.quad.shader = Shader(FB_VERTEX, FB_FRAGMENT);
-  framebuffer.quad.shader.SetUniform("screenTexture", (int)1);
+  framebuffer.quad.shader.SetUniform("screenTexture", (int)0);
 
   glGenFramebuffers(1, &framebuffer.fb);
   glBindFramebuffer(GL_FRAMEBUFFER, framebuffer.fb);
 
-  framebuffer.tex = Texture(screenWidth, screenHeight);
+  framebuffer.tex = Texture(renderWidth, renderHeight);
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, framebuffer.tex.id, 0);
 
   glGenRenderbuffers(1, &framebuffer.rb);
   glBindRenderbuffer(GL_RENDERBUFFER, framebuffer.rb);
-  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, screenWidth, screenHeight);
+  glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, renderWidth, renderHeight);
   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, framebuffer.rb);
   if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     debug::FATAL("Failed to setup framebuffer.", 0);
@@ -123,15 +123,18 @@ void Ennoia::Draw() {
   glViewport(0, 0, renderWidth, renderHeight);
 
   glClearColor(0.5, 0.5, 0.5, 1.0);
-  glClear(0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // End
   // scrollwheel = 0;
+
+
   
   // Setup default framebuffer
   glBindFramebuffer(GL_FRAMEBUFFER, 0);
   glDisable(GL_DEPTH_TEST);
   glClearColor(0.5, 0.5, 0.5, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT);
   glViewport(0, 0, screenWidth, screenHeight);
   
   // Draw quad to screen

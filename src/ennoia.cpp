@@ -18,15 +18,15 @@
 
 #include"utilities/array.cpp"
 
+#include"vectors/matrix.cpp"
 #include"vectors/vec2.cpp"
 #include"vectors/vec3.cpp"
 #include"vectors/vec4.cpp"
 #include"vectors/quaternion.cpp"
-#include"vectors/matrix.cpp"
 
-#include"texture/class.cpp"
-#include"shader/class.cpp"
-#include"mesh/class.cpp"
+#include"graphics/texture.cpp"
+#include"graphics/shader.cpp"
+#include"graphics/mesh.cpp"
 
 #include"system/core.cpp"
 

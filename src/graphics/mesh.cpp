@@ -32,7 +32,7 @@ struct Mesh {
   void Print();
 };
 
-#include"constants.hpp"
+#include"mesh_const.hpp"
 
 
 Mesh::Mesh() {
@@ -53,6 +53,11 @@ Mesh::Mesh(unsigned int type) {
       break;
     default: break;
   }
+  vao = 0;
+  vbo = 0;
+  ebo = 0;
+
+  //Print();
 
   glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo);
@@ -82,7 +87,21 @@ Mesh::Mesh(unsigned int type) {
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
 }
-Mesh::~Mesh() {}
+Mesh::~Mesh() {
+  glDeleteVertexArrays(1, &vao);
+  glDeleteBuffers(1, &vbo);
+  glDeleteBuffers(1, &ebo);
+}
+
+// TEMP
+/*
+void Mesh::Draw(Vec3f position = {0,0,0}, Vec3f scale = {1,1,1}, Vec3f roation = {0,0,0}) {
+  if (shader.id != 0) {
+    shader.Use();
+    //shader.SetUniform("view", camera::main.GetMatrix());
+    //shader.SetUniform("model", )
+  }
+}*/
 
 void Mesh::Print() {
   std::cout << "Mesh\n  Verts:\n";
@@ -95,7 +114,7 @@ void Mesh::Print() {
       << vertices[i].color << std::endl;
   }
   std::cout << "  Index:\n";
-  for (int i = 0; i < vertices.len; i++) {
+  for (int i = 0; i < indices.len; i++) {
     std::cout << "    " << indices[i].x << "," << indices[i].y << "," << indices[i].z << std::endl;
   }
 

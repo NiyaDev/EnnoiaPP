@@ -14,7 +14,7 @@ struct Shader {
   void SetUniform(String key, T data);
 };
 
-#include"constants.hpp"
+#include"shader_const.hpp"
 
 
 Shader::Shader() {}

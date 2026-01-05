@@ -22,3 +22,9 @@
 - Fully implemented Shaders.
 - Getting closer and closer to finishing setup.
 
+#### [1/4/26]
+- Moved Mesh, Shader, and Texture into graphics directory instead of their own.
+- Fixed issue with renderHeight not actually being set.
+- RenderTexture now does its job and is rendered.
+- Started on Matrixes.
+

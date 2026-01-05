@@ -61,7 +61,7 @@ TEST_CASE("Vector2", "[VEC2]") {
   REQUIRE(Vec2f(0,0).angle_rad(Vec2f(10,10)) == 0.7853982f);
   REQUIRE(Vec2f(0,0).angle_deg(Vec2f(10,10)) == 45);
   REQUIRE(Vec2f(10,10).normalize() == Vec2f(0.70710682f,0.70710682f));
-  //REQUIRE(Vec2f(10,10).transform() == Matrix());
+  //REQUIRE(Vec2f(10,10).transform(Matrix<4,4>()) == Vec2f(11,11));
   REQUIRE(Vec2f(10,10).lerp(Vec2f(20,20), 0.5f) == Vec2f(15,15));
   REQUIRE(Vec2f(10,10).reflect(Vec2f(0,1)) == Vec2f(10,-10));
   REQUIRE(Vec2f(10,10).rotate_rad(0.7853982) == Vec2f(0,14.14213562));
@@ -155,6 +155,19 @@ TEST_CASE("Vector4", "[VEC4]") {
   REQUIRE(Vec4f(10,10,10,10).v3 == Vec3f(10,10,10));
 }
 
+TEST_CASE("Matrix", "[Matrix]") {
+  Matrix<1,1> mat1x1;
+  Matrix<2,2> mat2x2;
+  Matrix<3,3> mat3x3;
+  Matrix<4,4> mat4x4;
+
+  Matrix<1,1> mat(Array<float>{1});
+
+  std::cout << mat1x1 << std::endl;
+  std::cout << mat << std::endl;
+  //REQUIRE(mat1x1 == );
+}
+
 /*
 TEST_CASE("Array", "[ARRAY]") {
   Array<Vec3f> arr1(5);
@@ -194,8 +207,8 @@ TEST_CASE("Array", "[ARRAY]") {
 TEST_CASE("TEST", "[TEST]") {
   Ennoia e("TEST1");
   
-  //while (!e.ShouldClose()) {
-  //  e.Draw();
-  //}
+  while (!e.ShouldClose()) {
+    e.Draw();
+  }
 }
 
