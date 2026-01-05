@@ -11,6 +11,7 @@ bool Ennoia::ShouldClose() {
   while (SDL_PollEvent(&event)) {
     switch (event.type) {
       case SDL_EVENT_QUIT:
+      case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
         return true;
 
       case SDL_EVENT_KEY_DOWN:
@@ -31,6 +32,8 @@ bool Ennoia::ShouldClose() {
       case SDL_EVENT_WINDOW_FOCUS_LOST:
       case SDL_EVENT_WINDOW_SAFE_AREA_CHANGED:
       case SDL_EVENT_WINDOW_OCCLUDED:
+      case SDL_EVENT_KEYMAP_CHANGED:
+      case SDL_EVENT_CLIPBOARD_UPDATE:
         break;
 
       case SDL_EVENT_AUDIO_DEVICE_ADDED:

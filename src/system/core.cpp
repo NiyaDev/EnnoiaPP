@@ -36,6 +36,8 @@ class Ennoia {
     Ennoia* SetRender(int width, int height);
 };
 
+static Ennoia* ennoia;
+
 Ennoia::Ennoia(String title = "Ennoia") {
   // Load all options + default
   screenWidth  = 1280;
@@ -105,6 +107,7 @@ Ennoia::Ennoia(String title = "Ennoia") {
   // Keybinds
 }
 Ennoia::~Ennoia() {
+  /*
   SDL_DestroyWindow(window);
   window = nullptr;
 
@@ -115,6 +118,7 @@ Ennoia::~Ennoia() {
   glDeleteRenderbuffers(1, &framebuffer.rb);
 
   SDL_Quit();
+  */
 }
 
 void Ennoia::Draw() {

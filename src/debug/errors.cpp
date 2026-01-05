@@ -2,7 +2,8 @@
 
 namespace debug {
   using namespace std;
-  void FATAL(String x, String y) {
+  template<typename T>
+  void FATAL(String x, T y) {
     cout << "[FATAL] - "   << x << " [" << y << "]" << std::endl;
     exit(1);
   }

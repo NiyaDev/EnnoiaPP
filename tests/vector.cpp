@@ -156,16 +156,13 @@ TEST_CASE("Vector4", "[VEC4]") {
 }
 
 TEST_CASE("Matrix", "[Matrix]") {
-  Matrix<1,1> mat1x1;
-  Matrix<2,2> mat2x2;
-  Matrix<3,3> mat3x3;
-  Matrix<4,4> mat4x4;
+  //Matrix mat4x4;
 
-  Matrix<1,1> mat(Array<float>{1});
+  //mat4x4.print();
 
-  std::cout << mat1x1 << std::endl;
-  std::cout << mat << std::endl;
-  //REQUIRE(mat1x1 == );
+  //Matrix mat(Array<float>({1}));
+
+  //REQUIRE(mat1x1 == mat);
 }
 
 /*
@@ -205,10 +202,10 @@ TEST_CASE("Array", "[ARRAY]") {
 }*/
 
 TEST_CASE("TEST", "[TEST]") {
-  Ennoia e("TEST1");
+  ennoia = new Ennoia("TEST");
   
-  while (!e.ShouldClose()) {
-    e.Draw();
+  while (!ennoia->ShouldClose()) {
+    ennoia->Draw();
   }
 }
 

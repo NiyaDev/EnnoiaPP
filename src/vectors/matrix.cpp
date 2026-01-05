@@ -1,66 +1,108 @@
 
 
-template<int x, int y>
 struct Matrix {
-  float m[x][y];
+  float m[16];
 
-  // Constructors
   Matrix();
   Matrix(Array<float> arr);
 
-  // Operators
-  // Relational
-  bool  operator==(const Matrix<x,y>& rhs) const;
-  // To string
-  //std::ostream& operator<<(std::ostream& os, const Matrix<x,y>& rhs);
+  bool operator==(const Matrix& rhs) const;
+  friend std::ostream& operator<<(std::ostream& os, const Matrix& rhs);
+
+  Matrix transpose();
+  void print();
 };
 
-
-template<int x, int y>
-Matrix<x,y>::Matrix() {
-  for (int x2 = 0; x2 < x; x2++) {
-    for (int y2 = 0; y2 < y; y2++) {
-      if (x2 == y2) m[x2][y2] = 1;
-    }
-  }
+Matrix::Matrix() {
+  Matrix({
+    1,0,0,0,
+    0,1,0,0,
+    0,0,1,0,
+    0,0,0,1
+  });
 }
-template<int x, int y>
-Matrix<x,y>::Matrix(Array<float> arr) {
-  if (arr.len != x * y)
+Matrix::Matrix(Array<float> arr) {
+  if (arr.len > 16)
     debug::FATAL("Matrix out of bounds.", 0);
 
-  for (int y2 = 0; y2 < y; y2++) {
-    for (int x2 = 0; x2 < x; x2++) {
-      std::cout << "[x:" << x2 << ",y:" << y2 << "] " << x2+y2 << std::endl;
-      std::cout << m[x2][y2] << " " << arr[x2+y2] << std::endl;
-      m[x2][y2] = arr[x2+y2];
-    }
+  int count = arr.len <= 16 ? arr.len : 16;
+  for (int i = 0; i < count; i++) {
+    m[i] = arr[i];
   }
+}
+Matrix lookAt(Vec3f eye, Vec3f target, Vec3f up) {
+  float length, ilength;
+
+  Vec3f vz = eye - target;
+  
+  Vec3f v = vz.normalize();
+  length = v.length();
+  if (length == 0)
+    length = 1;
+  ilength = 1 / length;
+  vz *= ilength;
+
+  Vec3f vx = up.cross(vz);
+  
+  v = vx.normalize();
+  length = v.length();
+  if (length == 0)
+    length = 1;
+  ilength = 1 / length;
+  vx *= ilength;
+
+  Vec3f vy = vz.cross(vz);
+
+  return Matrix(
+    {
+      vx.x, vy.x, vz.x, 0,
+      vx.y, vy.y, vz.y, 0,
+      vx.z, vy.z, vz.z, 0,
+      -vx.dot(eye), -vy.dot(eye), -vz.dot(eye), 1
+    }
+  );
+}
+
+Matrix Matrix::transpose() {
+  return Matrix(
+    {
+      m[0], m[4],  m[8], m[12],
+      m[1], m[5],  m[9], m[13],
+      m[2], m[6], m[10], m[14],
+      m[3], m[7], m[11], m[15]
+    }
+  );
 }
 
 // Relational
-template<int x, int y>
-bool Matrix<x,y>::operator==(const Matrix<x,y>& rhs) const {
-  for (int y2 = 0; y2 < y; y2++) {
-    for (int x2 = 0; x2 < x; x2++) {
-      if (m[x][y] != rhs.m[x][y]) return false;
-    }
-  }
+bool Matrix::operator==(const Matrix& rhs) const {
+  for (int i = 0; i < 16; i++)
+    if (m[i] != rhs.m[i]) return false;
   return true;
 }
 // To string
-template<int x, int y>
-std::ostream& operator<<(std::ostream& os, const Matrix<x,y>& rhs) {
-  //os << "{x=" << rhs.x << ",y=" << rhs.y << "}";
+std::ostream& operator<<(std::ostream& os, const Matrix& rhs) {
   os << "{\n";
-  for (int y2 = 0; y2 < y; y2++) {
+  for (int y = 0; y < 4; y++) {
     os << "  ";
-    for (int x2 = 0; x2 < x; x2++) {
-      os << rhs.m[x][y] << ",";
+    for (int x = 0; x < 4; x++) {
+      os << rhs.m[x+y] << ",";
     }
     os << "\n";
   }
   os << "}";
   return os;
+}
+
+void Matrix::print() {
+  std::cout << "{\n";
+  for (int y = 0; y < 4; y++) {
+    std::cout << "  ";
+    for (int x = 0; x < 4; x++) {
+      std::cout << m[x+y] << ",";
+    }
+    std::cout << "\n";
+  }
+  std::cout << "}" << std::endl;
 }
 

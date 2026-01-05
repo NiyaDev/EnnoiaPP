@@ -1,4 +1,5 @@
 
+
 struct Vec2f {
   float x;
   float y;
@@ -30,8 +31,6 @@ struct Vec2f {
   void  operator-=(float rhs);
   void  operator*=(float rhs);
   void  operator/=(float rhs);
-  // Arithmetic Matrix
-  Vec2f operator*(Matrix<4,4> rhs) const;
   // To string
   friend std::ostream& operator<<(std::ostream& os, const Vec2f& rhs);
 
@@ -42,7 +41,6 @@ struct Vec2f {
   float angle_rad(Vec2f v2);
   float angle_deg(Vec2f v2);
   Vec2f normalize();
-  Vec2f transform(Matrix<4,4> mat);
   Vec2f lerp(Vec2f v2, float amount);
   Vec2f reflect(Vec2f normal);
   Vec2f rotate_rad(float angle);
@@ -78,12 +76,12 @@ void  Vec2f::operator-=(float rhs) { x -= rhs; y -= rhs; }
 void  Vec2f::operator*=(float rhs) { x *= rhs; y *= rhs; }
 void  Vec2f::operator/=(float rhs) { x /= rhs; y /= rhs; }
 // Arithmetic Matrix
-Vec2f Vec2f::operator*(Matrix<4,4> rhs) const {
-  return Vec2f(
-    (rhs.m[0][0] * x) + (rhs.m[1][0] * y) + (rhs.m[3][0] * 1),
-    (rhs.m[0][1] * x) + (rhs.m[1][1] * y) + (rhs.m[3][1] * 1)
-  );
-}
+//Vec2f Vec2f::operator*(Matrix<4,4> rhs) const {
+//  return Vec2f(
+//    (rhs.m[0][0] * x) + (rhs.m[1][0] * y) + (rhs.m[3][0] * 1),
+//    (rhs.m[0][1] * x) + (rhs.m[1][1] * y) + (rhs.m[3][1] * 1)
+//  );
+//}
 // To string
 std::ostream& operator<<(std::ostream& os, const Vec2f& rhs) {
   os << "{x=" << rhs.x << ",y=" << rhs.y << "}";
@@ -104,7 +102,6 @@ Vec2f Vec2f::normalize() {
   }
   return *this;
 }
-Vec2f Vec2f::transform(Matrix<4,4> mat) { return *this * mat; }
 Vec2f Vec2f::lerp(Vec2f v2, float amount) { return *this + ((v2 - *this) * amount); }
 Vec2f Vec2f::reflect(Vec2f normal) { return *this - ((*this * normal) * 2) * normal; }
 Vec2f Vec2f::rotate_rad(float angle) {

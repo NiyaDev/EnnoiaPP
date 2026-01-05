@@ -29,6 +29,7 @@ struct Mesh {
   Mesh(unsigned int type);
   ~Mesh();
 
+  //void Mesh::Draw(Vec3f position, Vec3f scale, Vec3f rotation);
   void Print();
 };
 
@@ -94,8 +95,7 @@ Mesh::~Mesh() {
 }
 
 // TEMP
-/*
-void Mesh::Draw(Vec3f position = {0,0,0}, Vec3f scale = {1,1,1}, Vec3f roation = {0,0,0}) {
+/*void Mesh::Draw(Vec3f position = {0,0,0}, Vec3f scale = {1,1,1}, Vec3f rotation = {0,0,0}) {
   if (shader.id != 0) {
     shader.Use();
     //shader.SetUniform("view", camera::main.GetMatrix());
