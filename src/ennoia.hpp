@@ -1,5 +1,20 @@
 
+// Copyright 2026 NiyaDev
 
+
+#ifndef SRC_ENNOIA_HPP_
+#define SRC_ENNOIA_HPP_
+
+
+// C Headers
+#include<SDL3/SDL.h>
+#include<SDL3/SDL_main.h>
+#include<GL/glew.h>
+#include<GL/gl.h>
+#include<spng.h>
+
+
+// CPP Headers
 #include<iostream>
 #include<fstream>
 #include<cmath>
@@ -8,12 +23,8 @@
 #include<initializer_list>
 
 
-#include<SDL3/SDL.h>
-#include<SDL3/SDL_main.h>
-#include<GL/glew.h>
-#include<GL/gl.h>
+#include"../include/vectors/vec2.hpp"
 
-#include<spng.h>
 
 #include"types.h"
 #include"debug/errors.cpp"
@@ -35,3 +46,4 @@
 #include"system/camera.cpp"
 
 
+#endif  // SRC_ENNOIA_HPP_

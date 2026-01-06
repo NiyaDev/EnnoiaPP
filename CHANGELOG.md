@@ -31,3 +31,6 @@
 #### [1/5/26]
 - Redid Matrixes.
 
+#### [1/6/26]
+- Started going over everything with a delinter to fix everything and to get a better grasp on "best practices".
+
