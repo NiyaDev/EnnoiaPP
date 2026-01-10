@@ -1,4 +1,10 @@
 
+// Copyright 2026 NiyaDev
+
+
+#include <SDL3/SDL.h>
+#include "../../include/system/ennoia.hpp"
+
 
 bool Ennoia::ShouldClose() {
   // Calculate deltatime

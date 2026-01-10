@@ -1,39 +1,73 @@
 
+// Copyright 2026 NiyaDev
 
-struct Vertex {
-  Vec3f position;
-  Vec3f normal;
-  Vec2f tex;
-  Vec4f color;
+
+#include <iostream>
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include "../../include/graphics/texture.hpp"
+#include "../../include/graphics/mesh.hpp"
+
+
+Vertex BASIC_TRI[] = {
+  {{ 0.0,  0.5, 0.0}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{-0.5, -0.5, 0.0}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{ 0.0, -0.5, 0.0}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+};
+Vertex BASIC_QUAD[] = {
+  {{-1,  1, 0}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{-1, -1, 0}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  {{ 1, -1, 0}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+
+  {{-1,  1, 0}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{ 1, -1, 0}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{ 1,  1, 0}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+};
+Vertex BASIC_CUBE[] = {
+  // Back
+  {{-0.5, -0.5, -0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5, -0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5, -0.5}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5, -0.5}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{-0.5,  0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{-0.5, -0.5, -0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  // Front
+  {{-0.5, -0.5,  0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5,  0.5}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5,  0.5}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{-0.5,  0.5,  0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{-0.5, -0.5,  0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  // Left
+  {{-0.5,  0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{-0.5,  0.5, -0.5}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{-0.5, -0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{-0.5, -0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{-0.5, -0.5,  0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  {{-0.5,  0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  // Right
+  {{ 0.5,  0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5, -0.5}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5,  0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  // Bottom
+  {{-0.5, -0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5, -0.5}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{-0.5, -0.5,  0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  {{-0.5, -0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  // Top
+  {{-0.5,  0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5, -0.5}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{ 0.5,  0.5,  0.5}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{-0.5,  0.5,  0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
+  {{-0.5,  0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
 };
 
-struct Index {
-  unsigned int x;
-  unsigned int y;
-  unsigned int z;
-};
-
-struct Mesh {
-  Array<Vertex> vertices;
-  Array<Index>  indices;
-
-  unsigned int vao, vbo, ebo;
-
-  Shader shader;
-  String materialName;
-  Texture* texture;
-
-  Mesh();
-  Mesh(String filename);
-  Mesh(char* data, size_t size);
-  Mesh(unsigned int type);
-  ~Mesh();
-
-  //void Mesh::Draw(Vec3f position, Vec3f scale, Vec3f rotation);
-  void Print();
-};
-
-#include"mesh_const.hpp"
 
 
 Mesh::Mesh() {
@@ -58,31 +92,47 @@ Mesh::Mesh(unsigned int type) {
   vbo = 0;
   ebo = 0;
 
-  //Print();
-
   glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo);
   glBindVertexArray(vao);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, vertices.len * sizeof(Vertex), vertices.buffer, GL_STATIC_DRAW);
+  glBufferData(
+    GL_ARRAY_BUFFER,
+    vertices.len * sizeof(Vertex),
+    vertices.buffer, GL_STATIC_DRAW);
 
   if (vertices.len > 0) {
     glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.len * sizeof(Index), indices.buffer, GL_STATIC_DRAW);
+    glBufferData(
+      GL_ELEMENT_ARRAY_BUFFER,
+      indices.len * sizeof(Index),
+      indices.buffer,
+      GL_STATIC_DRAW);
   }
-  
+
   // Position
-  glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), 0);
+  glVertexAttribPointer(
+    0, 3, GL_FLOAT,
+    false, sizeof(Vertex), 0);
   glEnableVertexAttribArray(0);
   // Normal
-  glVertexAttribPointer(1, 3, GL_FLOAT, false, sizeof(Vertex), (void*)(sizeof(Vec3f)));
+  glVertexAttribPointer(
+    1, 3, GL_FLOAT,
+    false, sizeof(Vertex),
+    reinterpret_cast<void*>((sizeof(Vec3f))));
   glEnableVertexAttribArray(1);
   // Texcoord
-  glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(Vertex), (void*)(sizeof(Vec3f) * 2));
+  glVertexAttribPointer(
+    2, 2, GL_FLOAT,
+    false, sizeof(Vertex),
+    reinterpret_cast<void*>((sizeof(Vec3f) * 2)));
   glEnableVertexAttribArray(2);
   // Texcoord
-  glVertexAttribPointer(3, 4, GL_FLOAT, false, sizeof(Vertex), (void*)((sizeof(Vec3f) * 2) + sizeof(Vec2f)));
+  glVertexAttribPointer(
+    3, 4, GL_FLOAT,
+    false, sizeof(Vertex),
+    reinterpret_cast<void*>(((sizeof(Vec3f) * 2) + sizeof(Vec2f))));
   glEnableVertexAttribArray(3);
 
   glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -115,9 +165,14 @@ void Mesh::Print() {
   }
   std::cout << "  Index:\n";
   for (int i = 0; i < indices.len; i++) {
-    std::cout << "    " << indices[i].x << "," << indices[i].y << "," << indices[i].z << std::endl;
+    std::cout << "    " << indices[i].x
+      << "," << indices[i].y << ","
+      << indices[i].z << std::endl;
   }
 
-  std::cout << "  vao: " << vao << "  vbo: " << vbo << "  ebo: " << ebo << std::endl;
+  std::cout << "  vao: " << vao
+    << "  vbo: " << vbo
+    << "  ebo: " << ebo
+    << std::endl;
 }
 

@@ -1,6 +1,11 @@
 
+// Copyright 2026 NiyaDev
 
-bool areAlmostEqual(float x, float y, float epsilon = 0.0f) {
+
+#include "../../include/utils/floats.hpp"
+
+
+bool areAlmostEqual(float x, float y, float epsilon) {
   if (fabs(x - y) < epsilon)
     return true;
   return false;

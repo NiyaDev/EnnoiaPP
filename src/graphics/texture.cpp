@@ -1,15 +1,15 @@
 
+// Copyright 2026 NiyaDev
 
-struct Texture {
-  unsigned int id;
-  unsigned int width, height;
- 
-  Texture();
-  Texture(String filename);
-  Texture(char* data, size_t len);
-  Texture(unsigned int w, unsigned int h);
-  ~Texture();
-};
+
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+#include <GL/glew.h>
+#include <GL/gl.h>
+#include <spng.h>
+#include "../../include/graphics/texture.hpp"
+#include "../../include/utils/debug.hpp"
 
 
 Texture::Texture(String filename) {
@@ -32,16 +32,19 @@ Texture::Texture(String filename) {
   char* data = new char[size];
   if (spng_decode_image(ctx, data, size, SPNG_FMT_RGBA8, 0))
     debug::ERROR("Failed to decode png.", filename);
-  //ReverseData(data, size, width, height, 4); // TODO: Test without first
-  
+  // ReverseData(data, size, width, height, 4); // TODO: Test without first
+
   // OpenGL
   glGenTextures(1, &id);
   glBindTexture(GL_TEXTURE_2D, id);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-  //glGenerateMipmap(GL_TEXTURE_2D);
+  glTexImage2D(
+    GL_TEXTURE_2D, 0, GL_RGBA,
+    width, height, 0, GL_RGBA,
+    GL_UNSIGNED_BYTE, data);
+  // glGenerateMipmap(GL_TEXTURE_2D);
   if (id == 0) debug::ERROR("Failed to upload texture.", filename);
 
   // Cleanup
@@ -68,7 +71,7 @@ Texture::Texture(char* data, size_t len) {
   char* newdata = new char[size];
   if (spng_decode_image(ctx, newdata, size, SPNG_FMT_RGBA8, 0))
     debug::ERROR("Failed to decode png.", 0);
-  //ReverseData(newdata, size, width, height, 4); // TODO: Test without first
+  // ReverseData(newdata, size, width, height, 4); // TODO: Test without first
 
   // OpenGL
   glGenTextures(1, &id);
@@ -76,8 +79,11 @@ Texture::Texture(char* data, size_t len) {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-  //glGenerateMipmap(GL_TEXTURE_2D);
+  glTexImage2D(
+    GL_TEXTURE_2D, 0, GL_RGBA,
+    width, height, 0, GL_RGBA,
+    GL_UNSIGNED_BYTE, data);
+  // glGenerateMipmap(GL_TEXTURE_2D);
   if (id == 0) debug::ERROR("Failed to upload texture.", 0);
 
   // Cleanup
@@ -93,7 +99,10 @@ Texture::Texture(unsigned int w, unsigned int h) {
   glBindTexture(GL_TEXTURE_2D, id);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+  glTexImage2D(
+    GL_TEXTURE_2D, 0, GL_RGBA,
+    width, height, 0, GL_RGBA,
+    GL_UNSIGNED_BYTE, 0);
 }
 
 Texture::Texture() {}
@@ -103,7 +112,10 @@ Texture::~Texture() {
 }
 
 
-void ReverseData(char* data, size_t len, unsigned int width, unsigned int height, int bytesPerPixel) {
+void ReverseData(
+    char* data, size_t len,
+    unsigned int width, unsigned int height,
+    int bytesPerPixel) {
   size_t stride = width * bytesPerPixel;
   char* row = new char[stride];
 

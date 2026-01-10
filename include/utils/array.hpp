@@ -1,4 +1,14 @@
 
+// Copyright 2026 NiyaDev
+
+
+#ifndef INCLUDE_UTILS_ARRAY_HPP_
+#define INCLUDE_UTILS_ARRAY_HPP_
+
+
+#include <iostream>
+#include "../utils/debug.hpp"
+
 
 template<typename T>
 struct Array;
@@ -11,8 +21,9 @@ struct Array {
   T* buffer;
   size_t len;
 
+  // Constructors/Destructors
   Array();
-  Array(size_t max_len);
+  explicit Array(size_t max_len);
   Array(T data[], size_t length);
   Array(std::initializer_list<T> arr);
   ~Array();
@@ -32,13 +43,13 @@ Array<T>::Array() {
 }
 template<typename T>
 Array<T>::Array(size_t max_len) {
-  buffer = (T*)malloc(sizeof(T) * max_len);
+  buffer = reinterpret_cast<T*>(malloc(sizeof(T) * max_len));
   memset(buffer, 0, sizeof(T) * max_len);
   len = max_len;
 }
 template<typename T>
 Array<T>::Array(T data[], size_t length) {
-  buffer = (T*)malloc(sizeof(T) * length);
+  buffer = reinterpret_cast<T*>(malloc(sizeof(T) * length));
   len = length;
 
   for (int i = 0; i < len; i++)
@@ -46,7 +57,7 @@ Array<T>::Array(T data[], size_t length) {
 }
 template<typename T>
 Array<T>::Array(std::initializer_list<T> arr) {
-  buffer = (T*)malloc(sizeof(T) * arr.size());
+  buffer = reinterpret_cast<T*>(malloc(sizeof(T) * arr.size()));
   len = arr.size();
 
   int count = 0;
@@ -55,11 +66,11 @@ Array<T>::Array(std::initializer_list<T> arr) {
     count++;
   }
 }
-// TODO: If i try to free, sometimes it says there's a double free...
+// TODO(NiyaDev): If i try to free, sometimes it says there's a double free...
 //       Makes no sense, but it happens.
 template<typename T>
 Array<T>::~Array() {
-  //if (buffer != nullptr)
+  // if (buffer != nullptr)
   //  free(buffer);
   buffer = nullptr;
   len = 0;
@@ -86,7 +97,7 @@ void Array<T>::Expand(size_t new_len) {
   size_t old_size = sizeof(T) * len;
   size_t new_size = sizeof(T) * new_len;
 
-  T* temp = (T*)realloc(buffer, new_size);
+  T* temp = reinterpret_cast<T*>(realloc(buffer, new_size));
   buffer = temp;
   if (new_size > old_size)
     memset(buffer+len, 0, new_size - old_size);
@@ -100,3 +111,6 @@ void Array<T>::Print() {
     std::cout << "  : " << buffer[i] << std::endl;
   }
 }
+
+#endif  // INCLUDE_UTILS_ARRAY_HPP_
+

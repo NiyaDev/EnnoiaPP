@@ -34,3 +34,7 @@
 #### [1/6/26]
 - Started going over everything with a delinter to fix everything and to get a better grasp on "best practices".
 
+#### [1/10/26]
+- Cleaned up and seperated *everything*.
+- Everything compiles, need to test if it actually *works*.
+

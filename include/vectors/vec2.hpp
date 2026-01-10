@@ -6,6 +6,9 @@
 #define INCLUDE_VECTORS_VEC2_HPP_
 
 
+#include <ostream>
+
+
 struct Vec2f {
   float x;
   float y;

@@ -1,25 +1,9 @@
 
+// Copyright 2026 NiyaDev
 
-struct Vec4f {
-  union {
-    Vec2f v2;
-    Vec3f v3;
-    struct {
-      float x;
-      float y;
-      float z;
-    };
-  };
-  float w;
 
-  // Constructors
-  Vec4f();
-  Vec4f(float x, float y, float z, float w);
+#include "../../include/vectors/vec4.hpp"
 
-  // Operators
-  bool operator==(const Vec4f& rhs) const;
-  friend std::ostream& operator<<(std::ostream& os, const Vec4f& rhs);
-};
 
 Vec4f::Vec4f() {
   x = 0;
@@ -38,7 +22,8 @@ bool Vec4f::operator==(const Vec4f& rhs) const {
   return x == rhs.x && y == rhs.y && z == rhs.z && w == rhs.w;
 }
 std::ostream& operator<<(std::ostream& os, const Vec4f& rhs) {
-  os << "{x=" << rhs.x << ",y=" << rhs.y << ",z=" << rhs.z << ",w=" << rhs.w << "}";
+  os << "{x=" << rhs.x << ",y=" << rhs.y
+    << ",z=" << rhs.z << ",w=" << rhs.w << "}";
   return os;
 }
 

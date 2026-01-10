@@ -1,42 +1,12 @@
 
+// Copyright 2026 NiyaDev
 
-class Ennoia {
-  private:
-    struct { // SDL
-      SDL_Window* window;
-      SDL_GLContext context;
-      SDL_Event event;
-    };
 
-    struct { // Framebuffer
-      unsigned int fb, rb;
-      Texture tex;
-      Mesh quad;
-    } framebuffer;
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
+#include <GL/glew.h>
+#include "../../include/system/ennoia.hpp"
 
-    Shader default_shader_2d;
-    Shader default_shader_3d;
-
-  public:
-    unsigned int screenWidth, screenHeight;
-    unsigned int renderWidth, renderHeight;
-
-    bool borderless, fullscreen;
-
-    double deltatime, lastframe;
-
-    // Constructors
-    Ennoia(String title);
-    ~Ennoia();
-
-    bool ShouldClose();
-    void Draw();
-
-    Ennoia* SetScreen(int width, int height);
-    Ennoia* SetRender(int width, int height);
-};
-
-static Ennoia* ennoia;
 
 Ennoia::Ennoia(String title = "Ennoia") {
   // Load all options + default
@@ -165,6 +135,4 @@ Ennoia* Ennoia::SetRender(int width, int height) {
   // Reset screen texture
   return this;
 }
-
-#include"should_close.cpp"
 
