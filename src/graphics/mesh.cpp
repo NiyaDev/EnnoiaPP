@@ -7,6 +7,7 @@
 #include <GL/gl.h>
 #include "../../include/graphics/texture.hpp"
 #include "../../include/graphics/mesh.hpp"
+#include "../../include/system/camera.hpp"
 
 
 Vertex BASIC_TRI[] = {
@@ -67,7 +68,6 @@ Vertex BASIC_CUBE[] = {
   {{-0.5,  0.5,  0.5}, {0, 0, 1}, {0, 0}, {0, 0, 0, 1}},
   {{-0.5,  0.5, -0.5}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
 };
-
 
 
 Mesh::Mesh() {
@@ -145,15 +145,17 @@ Mesh::~Mesh() {
 }
 
 // TEMP
-/*void Mesh::Draw(Vec3f position = {0,0,0}, Vec3f scale = {1,1,1}, Vec3f rotation = {0,0,0}) {
+void Mesh::draw(Vec3f position = {0,0,0}, Vec3f scale = {1,1,1}, Vec3f rotation = {0,0,0}) {
   if (shader.id != 0) {
-    shader.Use();
-    //shader.SetUniform("view", camera::main.GetMatrix());
-    //shader.SetUniform("model", )
+    shader.use();
+    shader.setUniform("view", camera.getMatrix());
+    shader.setUniform("model", Matrix()
+        .translate(position)
+        .scale(scale));
   }
-}*/
+}
 
-void Mesh::Print() {
+void Mesh::print() {
   std::cout << "Mesh\n  Verts:\n";
 
   for (int i = 0; i < vertices.len; i++) {

@@ -12,10 +12,10 @@ name = "Ennoia Tests"
 type = "test"
 file = "tests/"
 dependencies = [
-  "ennoia-link",
   "SDL3-link",
   "spng-link",
   "GL-link",
-  "GLEW-link"
+  "GLEW-link",
+  "ennoia-link"
 ]
 

@@ -7,7 +7,11 @@
 
 
 #include <unordered_map>
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include "../types.h"
+#include "../graphics/texture.hpp"
+#include "../vectors/math.hpp"
 
 
 struct Shader {
@@ -18,11 +22,37 @@ struct Shader {
   Shader(const char* vs, const char* fs);
   ~Shader();
 
-  void Use();
+  void use();
 
   template<typename T>
-  void SetUniform(String key, T data);
+  void setUniform(String key, T data);
 };
+
+template<typename T>
+void Shader::setUniform(String key, T data) {
+  unsigned int loc;
+  if (locs.find(key) != locs.end()) {
+    loc = locs[key];
+  } else {
+    loc = glGetUniformLocation(id, key.c_str());
+    locs[key] = loc;
+  }
+
+  if constexpr(std::is_same<T, int>::value)
+    glProgramUniform1i(id, locs[key], data);
+  if constexpr(std::is_same<T, float>::value)
+    glProgramUniform1f(id, locs[key], data);
+  if constexpr(std::is_same<T, Vec2f>::value)
+    glProgramUniform2f(id, locs[key], data.x, data.y);
+  if constexpr(std::is_same<T, Vec3f>::value)
+    glProgramUniform2f(id, locs[key], data.x, data.y, data.z);
+  if constexpr(std::is_same<T, Vec4f>::value)
+    glProgramUniform2f(id, locs[key], data.x, data.y, data.z, data.w);
+  if constexpr(std::is_same<T, Matrix>::value)
+    glProgramUniformMatrix4fv(id, locs[key], 1, false, reinterpret_cast<float*>(&data.m));
+  if constexpr(std::is_same<T, Texture>::value)
+    glProgramUniformi(id, locs[key], data.id);
+}
 
 
 const char DEFAULT_VERTEX_3D[] =

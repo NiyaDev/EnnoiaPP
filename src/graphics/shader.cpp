@@ -6,11 +6,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 #include "../../include/graphics/shader.hpp"
-#include "../../include/graphics/texture.hpp"
 #include "../../include/utils/debug.hpp"
-#include "../../include/vectors/vec2.hpp"
-#include "../../include/vectors/vec3.hpp"
-#include "../../include/vectors/vec4.hpp"
 
 
 Shader::Shader() {}
@@ -74,33 +70,7 @@ Shader::~Shader() {
   locs.clear();
 }
 
-void Shader::Use() {
+void Shader::use() {
   glUseProgram(id);
-}
-
-template<typename T>
-void Shader::SetUniform(String key, T data) {
-  unsigned int loc;
-  if (locs.find(key) != locs.end()) {
-    loc = locs[key];
-  } else {
-    loc = glGetUniformLocation(id, key.c_str());
-    locs[key] = loc;
-  }
-
-  if constexpr(std::is_same<T, int>::value)
-    glProgramUniform1i(id, locs[key], data);
-  if constexpr(std::is_same<T, float>::value)
-    glProgramUniform1f(id, locs[key], data);
-  if constexpr(std::is_same<T, Vec2f>::value)
-    glProgramUniform2f(id, locs[key], data.x, data.y);
-  if constexpr(std::is_same<T, Vec3f>::value)
-    glProgramUniform2f(id, locs[key], data.x, data.y, data.z);
-  if constexpr(std::is_same<T, Vec4f>::value)
-    glProgramUniform2f(id, locs[key], data.x, data.y, data.z, data.w);
-  // if constexpr(std::is_same<T, Matrix<4,4>>::value)
-  //  std::cout << "is Matrix" << std::endl;
-  if constexpr(std::is_same<T, Texture>::value)
-    glProgramUniformi(id, locs[key], data.id);
 }
 

@@ -38,3 +38,6 @@
 - Cleaned up and seperated *everything*.
 - Everything compiles, need to test if it actually *works*.
 
+#### [1/11/26]
+- Worked on matrix stuff and got stuck for way to long.
+

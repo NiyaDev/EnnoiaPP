@@ -42,8 +42,8 @@ struct Mesh {
   Mesh(char* data, size_t size);
   ~Mesh();
 
-  // void Mesh::Draw(Vec3f position, Vec3f scale, Vec3f rotation);
-  void Print();
+  void draw(Vec3f position, Vec3f scale, Vec3f rotation);
+  void print();
 };
 
 
