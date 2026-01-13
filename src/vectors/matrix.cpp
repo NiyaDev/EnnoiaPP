@@ -62,21 +62,6 @@ Matrix perspective(double fov, double aspect, double near, double far) {
   float tb = top - bot;
   float fn = far - near;
 
-  std::cout << "[ top = (" << near << " * tan(" << fov << " * 0.5))]" << std::endl;
-  std::cout << "[ top = (" << near << " * " << tan(fov*0.5) << ")]" << std::endl;
-  std::cout << "[ top = (" << near * tan(fov*0.5) << ")]" << std::endl << std::endl;
-
-  std::cout << "[ right = (" << top << " * " << aspect << ")]" << std::endl;
-  std::cout << "[ right = (" << top * aspect << ")]" << std::endl << std::endl;
-  
-  std::cout << "[ rl = (" << right << " - " << -right << ")]" << std::endl;
-  std::cout << "[ rl = (" << right - -right << ")]" << std::endl << std::endl;
-  
-  std::cout << "[ [0] = ((" << near << " * 2) / " << rl << ")]" << std::endl;
-  std::cout << "[ [0] = ((" << near * 2 << " / " << rl << ")]" << std::endl;
-  std::cout << "[ [0] = ((" << (near * 2) / rl << ")]" << std::endl << std::endl;
-
-  std::cout << std::endl;
   output.m[0] =  (near * 2) / rl;
   output.m[5] =  (near * 2) / tb;
   output.m[8] =  (right + left) / rl;

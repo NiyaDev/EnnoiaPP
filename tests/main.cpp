@@ -10,7 +10,7 @@
 TEST_CASE("TEST", "[TEST]") {
   ennoia = new Ennoia("TEST");
 
-  //Mesh mesh(MESH_CUBE);
+  Mesh mesh(MESH_CUBE);
   
   while (!ennoia->ShouldClose()) {
     //mesh.draw(Vec3f(0,0,0), Vec3f(0,90,0), Vec3f(1,1,1));
