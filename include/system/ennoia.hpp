@@ -26,9 +26,6 @@ class Ennoia {
       Mesh quad;
     } framebuffer;
 
-    Shader default_shader_2d;
-    Shader default_shader_3d;
-
   public:
     unsigned int screenWidth, screenHeight;
     unsigned int renderWidth, renderHeight;
@@ -37,15 +34,26 @@ class Ennoia {
 
     double deltatime, lastframe;
 
+    Shader default_shader_2d;
+    Shader default_shader_3d;
+
+    // Keybinds
+    Vec2f mouse_position, mouse_delta;
+    
+
     // Constructors
     explicit Ennoia(String title);
     ~Ennoia();
 
-    bool ShouldClose();
-    void Draw();
+    bool shouldClose();
+    void draw();
 
-    Ennoia* SetScreen(int width, int height);
-    Ennoia* SetRender(int width, int height);
+    Ennoia* setScreen(int width, int height);
+    Ennoia* setRender(int width, int height);
+    Ennoia* updateScreen();
+
+    // Keybinds
+    void updateKeybinds();
 };
 
 static Ennoia* ennoia;

@@ -41,5 +41,13 @@ TEST_CASE("Array", "[ARRAY]") {
     count++;
   }
   REQUIRE(count == 5);
+
+  // Reading array like a standard one
+  REQUIRE(((float*)arr1.buffer)[0] == 1);
+  REQUIRE(((float*)arr1.buffer)[1] == 2);
+  REQUIRE(((float*)arr1.buffer)[2] == 3);
+  REQUIRE(((float*)arr1.buffer)[3] == 4);
+  REQUIRE(((float*)arr1.buffer)[4] == 5);
+  REQUIRE(((float*)arr1.buffer)[5] == 6);
 }
 

@@ -12,8 +12,8 @@
 
 Vertex BASIC_TRI[] = {
   {{ 0.0,  0.5, 0.0}, {0, 0, 1}, {1, 1}, {0, 0, 0, 1}},
-  {{-0.5, -0.5, 0.0}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
-  {{ 0.0, -0.5, 0.0}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
+  {{ 0.5, -0.5, 0.0}, {0, 0, 1}, {1, 0}, {0, 0, 0, 1}},
+  {{-0.5, -0.5, 0.0}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
 };
 Vertex BASIC_QUAD[] = {
   {{-1,  1, 0}, {0, 0, 1}, {0, 1}, {0, 0, 0, 1}},
@@ -93,23 +93,13 @@ Mesh::Mesh(unsigned int type) {
   ebo = 0;
 
   glGenVertexArrays(1, &vao);
-  glGenBuffers(1, &vbo);
   glBindVertexArray(vao);
+  glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   glBufferData(
     GL_ARRAY_BUFFER,
     vertices.len * sizeof(Vertex),
     vertices.buffer, GL_STATIC_DRAW);
-
-  if (vertices.len > 0) {
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(
-      GL_ELEMENT_ARRAY_BUFFER,
-      indices.len * sizeof(Index),
-      indices.buffer,
-      GL_STATIC_DRAW);
-  }
 
   // Position
   glVertexAttribPointer(
@@ -147,12 +137,18 @@ Mesh::~Mesh() {
 // TEMP
 void Mesh::draw(Vec3f position = {0,0,0}, Vec3f scale = {1,1,1}, Vec3f rotation = {0,0,0}) {
   if (shader.id != 0) {
-    shader.use();
     shader.setUniform("view", camera.getMatrix());
     shader.setUniform("model", Matrix()
         .translate(position)
         .scale(scale));
+    glUseProgram(shader.id);
   }
+
+  if (texture != nullptr)
+    glBindTexture(GL_TEXTURE_2D, texture->id);
+
+  glBindVertexArray(vao);
+  glDrawArrays(GL_TRIANGLES, 0, vertices.len);
 }
 
 void Mesh::print() {

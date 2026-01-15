@@ -6,7 +6,7 @@
 #include "../../include/system/ennoia.hpp"
 
 
-bool Ennoia::ShouldClose() {
+bool Ennoia::shouldClose() {
   // Calculate deltatime
   double current_frame = (double)SDL_GetTicks() / 1000;
   deltatime = current_frame - lastframe;
